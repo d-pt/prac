@@ -1,2 +1,0 @@
-INSERT INTO APP_ROLE values (1, 'ADMIN');
-INSERT INTO APP_ROLE values (2, 'NORMAL');
