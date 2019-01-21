@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -14,7 +15,7 @@ import java.util.List;
 public class AppUser {
 
     @Id @GeneratedValue private long uid;
-    private String name;
+    @NotNull private String name;
     @ManyToMany private List<AppRole> roles;
 
 }

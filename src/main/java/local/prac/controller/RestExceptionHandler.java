@@ -2,6 +2,8 @@ package local.prac.controller;
 
 import local.prac.exception.AppNoRecordFound;
 import local.prac.exception.ApplicationException;
+import local.prac.exception.ErrorMesssage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -20,7 +22,9 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
+@Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+    public static final String NO_RECORD_FOUND = "Application msg: Record does not exist";
 
     // API
 
@@ -29,12 +33,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex, final WebRequest request) {
         final String bodyOfResponse = "This should be application specific";
+        log.info("ConstraintViolationException:", ex);
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler({ DataIntegrityViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final DataIntegrityViolationException ex, final WebRequest request) {
         final String bodyOfResponse = "This should be application specific";
+        log.info("DataIntegrityViolationException:", ex);
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
@@ -42,13 +48,30 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
         final String bodyOfResponse = "Application msg: Either Massage does not exist or not readable";
         // ex.getCause() instanceof JsonMappingException, JsonParseException // for additional information later on
+        log.info("HttpMessageNotReadableException:", ex);
         return handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.BAD_REQUEST, request);
     }
 
+    /**
+     *
+     * When bean validation fails.
+     *
+     * @param ex
+     * @param headers
+     * @param status
+     * @param request
+     * @return
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
-        final String bodyOfResponse = "This should be application specific";
-        return handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.BAD_REQUEST, request);
+        final String bodyOfResponse = "Provided data is incorrect";
+        log.info("MethodArgumentNotValidException:", ex);
+        ErrorMesssage errorMesssage = ErrorMesssage.builder()
+                .errorCode(HttpStatus.BAD_REQUEST.value())
+                .message(NO_RECORD_FOUND)
+                .detail(bodyOfResponse)
+                .build();
+        return handleExceptionInternal(ex, errorMesssage, headers, HttpStatus.BAD_REQUEST, request);
     }
 
 
@@ -56,8 +79,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { EntityNotFoundException.class, AppNoRecordFound.class })
     protected ResponseEntity<Object> handleNotFound(final RuntimeException ex, final WebRequest request) {
-        final String bodyOfResponse = "Application msg: Record does not exist";
-        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        final String bodyOfResponse = NO_RECORD_FOUND;
+        log.info("EntityNotFoundException:", ex);
+        ErrorMesssage errorMesssage = ErrorMesssage.builder()
+                .errorCode(404)
+                .message(NO_RECORD_FOUND)
+                .detail("Pass correct params")
+                .build();
+        return handleExceptionInternal(ex, errorMesssage, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
   /*
