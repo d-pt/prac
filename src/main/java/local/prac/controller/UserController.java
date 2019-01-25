@@ -56,8 +56,8 @@ public class UserController {
      * Returns HTTP NO CONTENT(204), HTTP BAD REQUEST(400), HTTP NOT FOUND(404)
      */
     @PutMapping
-    //@ResponseStatus(HttpStatus.OK) //200 //it is default
-    public void update(@RequestBody AppUser user) {
+    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    public void update(@Valid @RequestBody AppUser user) {
         userService.update(user);
     }
 
@@ -67,7 +67,7 @@ public class UserController {
      * Returns HTTP NO CONTENT(204), HTTP NOT FOUND(404)
      */
     @DeleteMapping("/{id}")
-    //@ResponseStatus(HttpStatus.OK) //200 //it is default
+    @ResponseStatus(HttpStatus.NO_CONTENT) //204
     public void delete(@PathVariable("id") Long id) {
         userService.delete(id);
     }

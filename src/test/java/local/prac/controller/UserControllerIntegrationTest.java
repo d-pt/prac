@@ -7,8 +7,10 @@ import local.prac.entity.AppRole;
 import local.prac.entity.AppUser;
 import local.prac.service.UserService;
 import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +27,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(SpringRunner.class)
 
 //To load PracProjectApplication, this will load mock DB as well
@@ -32,11 +38,10 @@ import java.util.Arrays;
 
 // Cant use WebMvcTest(UserController.class), because of @SpringBootTest, another way to configure MockMvc
 @AutoConfigureMockMvc //@WebMvcTest(UserController.class)
-
 public class UserControllerIntegrationTest {
 
     private static  AppUser DUMMY_USER
-            = new AppUser(3, "C", Arrays.asList(
+            = new AppUser(0, "C", Arrays.asList(
                     new AppRole(2, "user")));
 
     @Autowired
@@ -57,6 +62,40 @@ public class UserControllerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("name", CoreMatchers.is("C")))
                 .andExpect(MockMvcResultMatchers.jsonPath("roles[0].rid", CoreMatchers.is(2)))
         ;
+    }
+
+    @Test
+    public void update_with_non_existing() throws Exception {
+        userService.add(DUMMY_USER).getUid();
+
+        mvc.perform(
+                put("/users")
+                        .content("{\"name\":\"D\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void update_with_existing() throws Exception {
+        userService.add(DUMMY_USER);
+
+        mvc.perform(
+                put("/users")
+                        .content("{\"name\":\"Z\", \"uid\":\"1\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(MockMvcResultHandlers.print())
+                //.andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+
+        AppUser afterUpdate = userService.findById(1L);
+        Assert.assertEquals(1L, afterUpdate.getUid());
+        Assert.assertEquals("Z", afterUpdate.getName());
     }
 
 

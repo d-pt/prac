@@ -49,7 +49,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         final String bodyOfResponse = "Application msg: Either Massage does not exist or not readable";
         // ex.getCause() instanceof JsonMappingException, JsonParseException // for additional information later on
         log.info("HttpMessageNotReadableException:", ex);
-        return handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.BAD_REQUEST, request);
+        ErrorMesssage errorMesssage = ErrorMesssage.builder()
+                .errorCode(HttpStatus.BAD_REQUEST.value())
+                .message("Invalid Input")
+                .detail(bodyOfResponse)
+                .build();
+        return handleExceptionInternal(ex, errorMesssage, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     /**

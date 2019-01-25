@@ -2,17 +2,22 @@ package local.prac.service;
 
 import com.google.common.base.Preconditions;
 import local.prac.exception.AppNoRecordFound;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-public class AbstractService<E, I, R extends JpaRepository<E, I>> {
+public abstract class AbstractService<E, I, R extends JpaRepository<E, I>> {
 
     private R repo;
 
     public AbstractService(R repo) {
         this.repo = repo;
     }
+
+    public abstract I getId(E e);
 
     public List<E> findAll() {
         return repo.findAll();
@@ -30,7 +35,7 @@ public class AbstractService<E, I, R extends JpaRepository<E, I>> {
 
     public void update(E e) {
         Preconditions.checkNotNull(e);
-        //findById(e.getUid());
+        findById(getId(e));
         repo.save(e);
     }
 

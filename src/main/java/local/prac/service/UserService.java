@@ -13,4 +13,9 @@ public class UserService extends AbstractService<AppUser, Long, AppUserRepo> {
         super(repo);
         userRepo = repo;
     }
+
+    @Override
+    public Long getId(AppUser user) {
+        return user.getUid();
+    }
 }
