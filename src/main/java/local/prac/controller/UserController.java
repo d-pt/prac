@@ -1,7 +1,7 @@
-package local.prac.controller;
+package local.app.user.controller;
 
-import local.prac.entity.AppUser;
-import local.prac.service.UserService;
+import local.app.user.entity.AppUser;
+import local.app.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
-package local.prac.service;
+package local.app.user.service;
 
 import com.google.common.base.Preconditions;
-import local.prac.entity.AppUser;
-import local.prac.repo.AppUserRepo;
+import local.app.user.entity.AppUser;
+import local.app.user.repo.AppUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

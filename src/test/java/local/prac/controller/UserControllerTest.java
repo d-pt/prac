@@ -1,9 +1,9 @@
-package local.prac.controller;
+package local.app.user.controller;
 
-import local.prac.entity.AppRole;
-import local.prac.entity.AppUser;
-import local.prac.exception.AppNoRecordFound;
-import local.prac.service.UserService;
+import local.app.user.entity.AppRole;
+import local.app.user.entity.AppUser;
+import local.app.user.exception.AppNoRecordFound;
+import local.app.user.service.UserService;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;

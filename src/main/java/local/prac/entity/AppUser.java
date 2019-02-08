@@ -1,4 +1,4 @@
-package local.prac.entity;
+package local.app.user.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

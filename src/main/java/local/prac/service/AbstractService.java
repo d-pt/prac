@@ -1,7 +1,7 @@
-package local.prac.service;
+package local.app.user.service;
 
 import com.google.common.base.Preconditions;
-import local.prac.exception.AppNoRecordFound;
+import local.app.user.exception.AppNoRecordFound;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;

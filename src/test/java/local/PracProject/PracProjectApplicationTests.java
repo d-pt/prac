@@ -1,4 +1,4 @@
-package local.PracProject;
+package local.app.userProject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

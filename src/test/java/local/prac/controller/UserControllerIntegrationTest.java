@@ -1,11 +1,11 @@
-package local.prac.controller;
+package local.app.user.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import local.prac.PracProjectApplication;
-import local.prac.entity.AppRole;
-import local.prac.entity.AppUser;
-import local.prac.service.UserService;
+import local.app.user.PracProjectApplication;
+import local.app.user.entity.AppRole;
+import local.app.user.entity.AppUser;
+import local.app.user.service.UserService;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;

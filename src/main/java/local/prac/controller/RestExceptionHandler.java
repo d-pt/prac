@@ -1,8 +1,8 @@
-package local.prac.controller;
+package local.app.user.controller;
 
-import local.prac.exception.AppNoRecordFound;
-import local.prac.exception.ApplicationException;
-import local.prac.exception.ErrorMesssage;
+import local.app.user.exception.AppNoRecordFound;
+import local.app.user.exception.ApplicationException;
+import local.app.user.exception.ErrorMesssage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;

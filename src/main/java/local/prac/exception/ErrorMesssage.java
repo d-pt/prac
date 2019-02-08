@@ -1,4 +1,4 @@
-package local.prac.exception;
+package local.app.user.exception;
 
 import lombok.Builder;
 import lombok.Data;

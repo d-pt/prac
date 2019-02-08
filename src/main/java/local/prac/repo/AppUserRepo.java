@@ -1,6 +1,6 @@
-package local.prac.repo;
+package local.app.user.repo;
 
-import local.prac.entity.AppUser;
+import local.app.user.entity.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
